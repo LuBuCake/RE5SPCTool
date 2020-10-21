@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,10 +15,6 @@ namespace FWSEConverter
 {
     public partial class Main : Form
     {
-        [DllImport("kernel32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool AllocConsole();
-
         // Main
         public Main()
         {
@@ -26,44 +23,133 @@ namespace FWSEConverter
 
         private void Main_Load(object sender, EventArgs e)
         {
-            //AllocConsole();
+
         }
+
+        // Globals
+
+        private string[] ToWAVFiles;
+        private string[] ToFWSEFiles;
 
         // Methods
 
-        private void TestButton_Click(object sender, EventArgs e)
+        private string StringBetween(string strSource, string strStart, string strEnd)
         {
-            FWSEReader file;
-            FWSECodec Codec = new FWSECodec();
-            WAVEWriter newfile;
-
-            using (OpenFileDialog OpenFile = new OpenFileDialog())
+            if (strSource.Contains(strStart) && strSource.Contains(strEnd))
             {
-                OpenFile.Filter = "FWSE files (*.FWSE)|*.FWSE";
-                OpenFile.RestoreDirectory = true;
+                int Start, End;
+                Start = strSource.IndexOf(strStart, 0) + strStart.Length;
+                End = strSource.IndexOf(strEnd, Start);
+                return strSource.Substring(Start, End - Start);
+            }
 
-                if (OpenFile.ShowDialog() == DialogResult.OK)
+            return "";
+        }
+
+        private void ToWAVOpenFilesButton_Click(object sender, EventArgs e)
+        {          
+            using (OpenFileDialog OpenFiles = new OpenFileDialog())
+            {
+                OpenFiles.Filter = "FWSE files (*.FWSE)|*.FWSE";
+                OpenFiles.Title = "Select one or more FWSE files";
+                OpenFiles.Multiselect = true;
+
+                if (OpenFiles.ShowDialog() == DialogResult.OK)
                 {
-                    file = new FWSEReader(OpenFile.FileName);
-                    int[] Converted = Codec.DecodeMTF_IMA(file.SoundData);
+                    ToWAVFilePathBox.Text = "";
 
-                    ResultLabel.Text = file.HeaderString();
+                    ToWAVFiles = new string[OpenFiles.FileNames.Length];
 
-                    using (SaveFileDialog SaveFile = new SaveFileDialog())
+                    for (int i = 0; i < OpenFiles.FileNames.Length; i++)
                     {
-                        SaveFile.Filter = "WAVE files (*.wav)|*.wav";
-                        SaveFile.RestoreDirectory = true;
-
-                        if (SaveFile.ShowDialog() == DialogResult.OK)
-                        {
-                            int[][] newbytes = new int[1][];
-                            newbytes[0] = Converted;
-
-                            newfile = new WAVEWriter(SaveFile.FileName, 1, 48000, 16, Converted.Length, newbytes);
-                        }
+                        ToWAVFiles[i] = OpenFiles.FileNames[i];
+                        ToWAVFilePathBox.Text += ToWAVFiles[i] + " ";
                     }
                 }
             }
+        }
+
+        private void ToWAVButton_Click(object sender, EventArgs e)
+        {
+            FWSEReader FWSEFile;
+            WAVEWriter WAVFile;
+
+            if (ToWAVFiles.Length <= 0)
+            {
+                MessageBox.Show("No files to convert.", "Ops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
+
+            foreach (string fwsefile in ToWAVFiles)
+            {
+                if (!File.Exists(fwsefile))
+                {
+                    MessageBox.Show("File(s) is/are no longer present.", "Ops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ToWAVFiles = new string[0];
+                    ToWAVFilePathBox.Text = "";
+                    return;
+                }
+
+                FWSEFile = new FWSEReader(fwsefile);
+                WAVFile = new WAVEWriter(fwsefile, (ushort)FWSEFile.Channels, (uint)FWSEFile.SampleRate, (ushort)FWSEFile.BitsPerSample, FWSEFile.SampleCount, FWSEFile.ConvertedSoundData);
+            }
+
+            MessageBox.Show("Files Converted!", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            ToWAVFiles = new string[0];
+            ToWAVFilePathBox.Text = "";
+        }
+
+        private void ToFWSEOpenFilesButton_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog OpenFiles = new OpenFileDialog())
+            {
+                OpenFiles.Filter = "WAVE files (*.wav)|*.wav";
+                OpenFiles.Title = "Select one or more WAVE files";
+                OpenFiles.Multiselect = true;
+
+                if (OpenFiles.ShowDialog() == DialogResult.OK)
+                {
+                    ToFWSEFilePathBox.Text = "";
+
+                    ToFWSEFiles = new string[OpenFiles.FileNames.Length];
+
+                    for (int i = 0; i < OpenFiles.FileNames.Length; i++)
+                    {
+                        ToFWSEFiles[i] = OpenFiles.FileNames[i];
+                        ToFWSEFilePathBox.Text += ToFWSEFiles[i] + " ";
+                    }
+                }
+            }
+        }
+
+        private void ToFWSEButton_Click(object sender, EventArgs e)
+        {
+            WAVEReader WAVEFile;
+            WAVEWriter WAVENewFile;
+
+            if (ToFWSEFiles.Length <= 0)
+            {
+                MessageBox.Show("No files to convert.", "Ops!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                return;
+            }
+
+            foreach (string wavfile in ToFWSEFiles)
+            {
+                if (!File.Exists(wavfile))
+                {
+                    MessageBox.Show("File(s) is/are no longer present.", "Ops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ToFWSEFiles = new string[0];
+                    ToFWSEFilePathBox.Text = "";
+                    return;
+                }
+
+                WAVEFile = new WAVEReader(wavfile);
+                WAVENewFile = new WAVEWriter(wavfile, WAVEFile.NumChannels, WAVEFile.SampleRate, WAVEFile.BitsPerSample, WAVEFile.Samples, WAVEFile.Subchunk2Data);
+            }
+
+            MessageBox.Show("Files Converted!", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            ToFWSEFiles = new string[0];
+            ToFWSEFilePathBox.Text = "";
         }
     }
 }

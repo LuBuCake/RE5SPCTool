@@ -112,29 +112,6 @@ namespace FWSEConverter
 
             BR.Dispose();
         }
-
-        public string HeaderString()
-        {
-            string result = "RIFF HEADER: " + Environment.NewLine +
-            "ChunkID: " + ChunkID.ToString() + Environment.NewLine +
-            "ChunkSize: " + ChunkSize.ToString() + Environment.NewLine +
-            "Format: " + Format.ToString() + Environment.NewLine + Environment.NewLine +
-            "FMT HEADER: " + Environment.NewLine +
-            "Subchunck1ID: " + Subchunck1ID.ToString() + Environment.NewLine +
-            "Subchunk1Size: " + Subchunk1Size.ToString() + Environment.NewLine +
-            "AudioFormat: " + AudioFormat.ToString() + Environment.NewLine +
-            "NumChannels: " + NumChannels.ToString() + Environment.NewLine +
-            "SampleRate: " + SampleRate.ToString() + Environment.NewLine +
-            "ByteRate: " + ByteRate.ToString() + Environment.NewLine +
-            "BlockAlign: " + BlockAlign.ToString() + Environment.NewLine +
-            "BitsPerSample: " + BitsPerSample.ToString() + Environment.NewLine +
-            "Subchunck2ID: " + Subchunck2ID.ToString() + Environment.NewLine +
-            "Subchunk2Size: " + Subchunk2Size.ToString() + Environment.NewLine +
-            "Samples: " + Samples.ToString() + Environment.NewLine +
-            "CHAN 1 Count: " + Subchunk2Data[0].Length.ToString();
-
-            return result;
-        }
     }
 
     public class WAVEWriter
@@ -166,6 +143,8 @@ namespace FWSEConverter
 
         public WAVEWriter(string FilePath, ushort ChannelQuantity, uint SampleFrequency, ushort BitSample, long SampleQuantity, int[][] SoundData)
         {
+            FilePath += ".wav";
+
             FS = new FileStream(FilePath, FileMode.Create);
             BW = new BinaryWriter(FS);
 
