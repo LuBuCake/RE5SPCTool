@@ -15,6 +15,11 @@ namespace FWSEConverter
 {
     public partial class Main : Form
     {
+        // Globals
+
+        private string[] ToWAVFiles;
+        private string[] ToFWSEFiles;
+
         // Main
         public Main()
         {
@@ -23,13 +28,9 @@ namespace FWSEConverter
 
         private void Main_Load(object sender, EventArgs e)
         {
-
+            ToWAVFiles = new string[0];
+            ToFWSEFiles = new string[0];
         }
-
-        // Globals
-
-        private string[] ToWAVFiles;
-        private string[] ToFWSEFiles;
 
         // Methods
 
@@ -94,7 +95,7 @@ namespace FWSEConverter
                 WAVFile = new WAVEWriter(fwsefile, (ushort)FWSEFile.Channels, (uint)FWSEFile.SampleRate, (ushort)FWSEFile.BitsPerSample, FWSEFile.SampleCount, FWSEFile.ConvertedSoundData);
             }
 
-            MessageBox.Show("Files Converted!", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            MessageBox.Show("WAVE files generated!", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             ToWAVFiles = new string[0];
             ToWAVFilePathBox.Text = "";
         }
@@ -125,7 +126,7 @@ namespace FWSEConverter
         private void ToFWSEButton_Click(object sender, EventArgs e)
         {
             WAVEReader WAVEFile;
-            WAVEWriter WAVENewFile;
+            FWSEWriter FWSEFile;
 
             if (ToFWSEFiles.Length <= 0)
             {
@@ -144,10 +145,10 @@ namespace FWSEConverter
                 }
 
                 WAVEFile = new WAVEReader(wavfile);
-                WAVENewFile = new WAVEWriter(wavfile, WAVEFile.NumChannels, WAVEFile.SampleRate, WAVEFile.BitsPerSample, WAVEFile.Samples, WAVEFile.Subchunk2Data);
+                FWSEFile = new FWSEWriter(wavfile, WAVEFile.Subchunk2Data[0]);
             }
 
-            MessageBox.Show("Files Converted!", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            MessageBox.Show("FWSE files generated!", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
             ToFWSEFiles = new string[0];
             ToFWSEFilePathBox.Text = "";
         }

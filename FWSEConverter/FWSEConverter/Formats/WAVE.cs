@@ -141,6 +141,7 @@ namespace FWSEConverter
 
         public long Samples;
 
+
         public WAVEWriter(string FilePath, ushort ChannelQuantity, uint SampleFrequency, ushort BitSample, long SampleQuantity, int[][] SoundData)
         {
             FilePath += ".wav";

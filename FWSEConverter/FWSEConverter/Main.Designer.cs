@@ -36,7 +36,7 @@
             this.ToWAVOpenFilesButton = new System.Windows.Forms.Button();
             this.ToWAVFilePathBox = new System.Windows.Forms.TextBox();
             this.ContainerPage = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
+            this.CopyrightLabel = new System.Windows.Forms.Label();
             this.ToFWSEGPBox = new System.Windows.Forms.GroupBox();
             this.ToFWSEOpenFilesButton = new System.Windows.Forms.Button();
             this.ToFWSEFilePathBox = new System.Windows.Forms.TextBox();
@@ -119,15 +119,15 @@
             this.ContainerPage.Text = "SPC Container";
             this.ContainerPage.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // CopyrightLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label1.Location = new System.Drawing.Point(202, 352);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(175, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Copyright © 2020 by LuBuCake";
+            this.CopyrightLabel.AutoSize = true;
+            this.CopyrightLabel.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.CopyrightLabel.Location = new System.Drawing.Point(202, 352);
+            this.CopyrightLabel.Name = "CopyrightLabel";
+            this.CopyrightLabel.Size = new System.Drawing.Size(175, 15);
+            this.CopyrightLabel.TabIndex = 1;
+            this.CopyrightLabel.Text = "Copyright © 2020 by LuBuCake";
             // 
             // ToFWSEGPBox
             // 
@@ -174,7 +174,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(389, 376);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.CopyrightLabel);
             this.Controls.Add(this.MainTabControl);
             this.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -201,7 +201,7 @@
         private System.Windows.Forms.TabControl MainTabControl;
         private System.Windows.Forms.TabPage ConverterPage;
         private System.Windows.Forms.TabPage ContainerPage;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label CopyrightLabel;
         private System.Windows.Forms.GroupBox ToWAVGPBox;
         private System.Windows.Forms.TextBox ToWAVFilePathBox;
         private System.Windows.Forms.Button ToWAVOpenFilesButton;

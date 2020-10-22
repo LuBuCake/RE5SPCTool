@@ -1,0 +1,10 @@
+C:\Users\madne\Documents\GitHub\FWSEConverter\FWSEConverter\FWSEConverter\bin\Release\FWSEConverter.exe.config
+C:\Users\madne\Documents\GitHub\FWSEConverter\FWSEConverter\FWSEConverter\bin\Release\FWSEConverter.exe
+C:\Users\madne\Documents\GitHub\FWSEConverter\FWSEConverter\FWSEConverter\bin\Release\FWSEConverter.pdb
+C:\Users\madne\Documents\GitHub\FWSEConverter\FWSEConverter\FWSEConverter\obj\Release\FWSEConverter.Main.resources
+C:\Users\madne\Documents\GitHub\FWSEConverter\FWSEConverter\FWSEConverter\obj\Release\FWSEConverter.Properties.Resources.resources
+C:\Users\madne\Documents\GitHub\FWSEConverter\FWSEConverter\FWSEConverter\obj\Release\FWSEConverter.csproj.GenerateResource.cache
+C:\Users\madne\Documents\GitHub\FWSEConverter\FWSEConverter\FWSEConverter\obj\Release\FWSEConverter.csproj.CoreCompileInputs.cache
+C:\Users\madne\Documents\GitHub\FWSEConverter\FWSEConverter\FWSEConverter\obj\Release\FWSEConverter.exe
+C:\Users\madne\Documents\GitHub\FWSEConverter\FWSEConverter\FWSEConverter\obj\Release\FWSEConverter.pdb
+C:\Users\madne\Documents\GitHub\FWSEConverter\FWSEConverter\FWSEConverter\obj\Release\FWSEConverter.csprojAssemblyReference.cache
