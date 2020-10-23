@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Formats\FWSE.cs" />
+    <Compile Include="Formats\SPAC.cs" />
     <Compile Include="Formats\WAVE.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>

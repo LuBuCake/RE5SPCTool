@@ -214,7 +214,11 @@ namespace FWSEConverter
         public int SampleRate;
         public int BitsPerSample;
 
-        public byte[] Garbage;
+        public byte[] UnknowData;
+
+        public byte[] WholeBuffer;
+
+        // DATA
 
         public byte[] SoundData;
         public int[][] ConvertedSoundData;
@@ -223,6 +227,11 @@ namespace FWSEConverter
         {
             FS = new FileStream(FilePath, FileMode.Open);
             BR = new BinaryReader(FS);
+
+            WholeBuffer = new byte[1024];
+            WholeBuffer = BR.ReadBytes(1024);
+
+            BR.BaseStream.Position = 0;
 
             for (int i = 0; i < 4; i++)
             {
@@ -238,7 +247,7 @@ namespace FWSEConverter
             SampleRate = BR.ReadInt32();
             BitsPerSample = BR.ReadInt32();
 
-            Garbage = BR.ReadBytes(992); // Buffer (1024) - Header (32)
+            UnknowData = BR.ReadBytes(992); // Buffer (1024) - Header (32)
 
             SoundData = BR.ReadBytes((int)FS.Length - Buffer);
 
@@ -273,15 +282,26 @@ namespace FWSEConverter
 
         public FWSEWriter(string FilePath, int[] WAVEData)
         {
-            FilePath += ".FWSE";
+            WriteNewFWSE(FilePath, WAVEData);
+        }
 
+        public FWSEWriter(string FilePath, byte[] FWSEBufferData, byte[] FWSESoundData)
+        {
+            WriteExistentFWSE(FilePath, FWSEBufferData, FWSESoundData);
+        }
+
+        // Write from WAV
+
+        public void WriteNewFWSE(string FilePath, int[] WAVEData)
+        {
             FS = new FileStream(FilePath, FileMode.Create);
             BW = new BinaryWriter(FS);
 
-            SampleCount = WAVEData.Length / 2;
-            DataSize = 1024 + (SampleCount);
+            SampleCount = WAVEData.Length;
+            DataSize = 1024 + (SampleCount / 2);
 
             // FWSE Header
+
             BW.Write(Format.ToCharArray());
             BW.Write(BitConverter.GetBytes(Version));
             BW.Write(BitConverter.GetBytes(DataSize));
@@ -292,19 +312,37 @@ namespace FWSEConverter
             BW.Write(BitConverter.GetBytes(SampleRate));
             BW.Write(BitConverter.GetBytes(BitsPerSample));
 
-            // Garbage
+            // UnknowData
+
             for (int i = 0; i < 992; i++)
             {
                 BW.Write((byte)0xFF);
             }
 
             // SoundData
-            SoundData = FWSECodec.EncodeMTF_IMA(WAVEData);
+
+            /*
+            SoundData = FWSECodec.EncodeMTF_IMA(WAVAData);
+
             for (int i = 0; i < SoundData.Length; i++)
             {
                 BW.Write((byte)SoundData[i]);
             }
+            */
 
+            FS.Dispose();
+            BW.Dispose();
+        }
+
+        public void WriteExistentFWSE(string FilePath, byte[] FWSEBufferData, byte[] FWSESoundData)
+        {
+            FS = new FileStream(FilePath, FileMode.Create);
+            BW = new BinaryWriter(FS);
+
+            BW.Write(FWSEBufferData);
+            BW.Write(FWSESoundData);
+
+            FS.Dispose();
             BW.Dispose();
         }
     }

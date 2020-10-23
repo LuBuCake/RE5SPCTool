@@ -110,6 +110,7 @@ namespace FWSEConverter
                 }
             }
 
+            FS.Dispose();
             BR.Dispose();
         }
     }
@@ -144,8 +145,6 @@ namespace FWSEConverter
 
         public WAVEWriter(string FilePath, ushort ChannelQuantity, uint SampleFrequency, ushort BitSample, long SampleQuantity, int[][] SoundData)
         {
-            FilePath += ".wav";
-
             FS = new FileStream(FilePath, FileMode.Create);
             BW = new BinaryWriter(FS);
 
@@ -200,6 +199,7 @@ namespace FWSEConverter
                 }
             }
 
+            FS.Dispose();
             BW.Dispose();
         }
     }
