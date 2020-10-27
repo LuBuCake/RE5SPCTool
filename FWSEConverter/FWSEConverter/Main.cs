@@ -164,7 +164,10 @@ namespace FWSEConverter
                         if (WAVEFile.WAVECheck())
                             FWSEFile = new FWSEWriter(Directory.SelectedPath + "/" + newfilename, WAVEFile.Subchunk2Data[0]);
                         else
-                            MessageBox.Show(WAVEFile.filepathdir + " is not a valid WAVE file.");
+                        {
+                            MessageBox.Show(WAVEFile.filepathdir + " is not a valid WAVE file.", "Ops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
                     }
 
                     MessageBox.Show("FWSE files generated!", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
@@ -260,7 +263,7 @@ namespace FWSEConverter
             FWSEReader FWSEFile;
             string filename;
 
-            if (SPACSoundsComboBox.SelectedIndex == WorkingSPAC.NumSounds) // Multiple
+            if (SPACSoundsComboBox.SelectedIndex == WorkingSPAC.NumSounds)
             {
                 using (OpenFileDialog OpenFile = new OpenFileDialog())
                 {
