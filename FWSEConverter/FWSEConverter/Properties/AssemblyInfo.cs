@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // As informações gerais sobre um assembly são controladas por
 // conjunto de atributos. Altere estes valores de atributo para modificar as informações
 // associadas a um assembly.
-[assembly: AssemblyTitle("FWSEConverter")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("RESIDENT EVIL 5 FWSE/SPC Tool")]
+[assembly: AssemblyDescription("Decode, encode, extrack and repack FWSE files from RE5.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FWSEConverter")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCompany("ATLAS CO, LTD.")]
+[assembly: AssemblyProduct("RESIDENT EVIL 5 FWSE/SPC Tool")]
+[assembly: AssemblyCopyright("ATLAS CO, LTD. (LuBuCake) 2020 All Rights Reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // É possível especificar todos os valores ou usar como padrão os Números de Build e da Revisão
 // usando o "*" como mostrado abaixo:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.129")]
+[assembly: AssemblyFileVersion("1.0.0.129")]

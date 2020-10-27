@@ -1,14 +1,12 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FWSEConverter
 {
     public static class FWSECodec
     {
+        // ADPCM Tables
+
         public static int[] ADPCMTable = {
             7, 8, 9, 10, 11, 12, 13, 14,
             16, 17, 19, 21, 23, 25, 28, 31,
@@ -21,14 +19,14 @@ namespace FWSEConverter
             3327, 3660, 4026, 4428, 4871, 5358, 5894, 6484,
             7132, 7845, 8630, 9493, 10442, 11487, 12635, 13899,
             15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794,
-            32767,
-
-            0
+            32767
         };
 
         public static int[] ADPCM_IndexTable = { -1, -1, -1, -1, 2, 4, 6, 8, -1, -1, -1, -1, 2, 4, 6, 8 };
 
         public static int[] CAPCOM_IndexTable = { 8, 6, 4, 2, -1, -1, -1, -1, -1, -1, -1, -1, 2, 4, 6, 8 };
+
+        // Utils
 
         private static int Clamp(int val, int min, int max)
         {
@@ -37,22 +35,26 @@ namespace FWSEConverter
             return val;
         }
 
-        public static void MTF_IMA_ExpandNible(byte[] FWSEData, int Offset, int nibble_shift, ref int sample_decoded_last, ref int step_index)
+        // Decode
+
+        private static int IMA_MTF_ExpandNibble(int nibble, int shift, ref int sample_decoded_last, ref int step_index)
         {
-            int sample_nibble, sample_decoded, step, delta;
+            int step, delta, sample;
 
-            sample_nibble = (FWSEData[Offset] >> nibble_shift) & 0xF;
-            sample_decoded = sample_decoded_last;
+            nibble = nibble >> shift & 0xF;
+
             step = ADPCMTable[step_index];
+            sample = sample_decoded_last;
 
-            delta = step * (2 * sample_nibble - 15);
-            sample_decoded += delta;
+            delta = step * (2 * nibble - 15);
 
-            sample_decoded_last = sample_decoded;
-            step_index += CAPCOM_IndexTable[sample_nibble];
+            sample += delta;
+            sample_decoded_last = sample;
 
-            if (step_index < 0) step_index = 0;
-            if (step_index > 88) step_index = 88;
+            step_index += CAPCOM_IndexTable[nibble];
+            step_index = Clamp(step_index, 0, 88);
+
+            return Clamp(sample >> 4, -32768, 32767);
         }
 
         public static int[] DecodeMTF_IMA(byte[] FWSEData)
@@ -60,6 +62,7 @@ namespace FWSEConverter
             int sample_count = FWSEData.Length * 2;
             int sample_decoded_last = 0;
             int step_index = 0;
+            int sample = 0;
 
             int[] ResultA = new int[FWSEData.Length];
             int[] ResultB = new int[FWSEData.Length];
@@ -67,11 +70,11 @@ namespace FWSEConverter
 
             for (int i = 0; i < FWSEData.Length; i++)
             {
-                MTF_IMA_ExpandNible(FWSEData, i, 4, ref sample_decoded_last, ref step_index);
-                ResultA[i] = Clamp(sample_decoded_last >> 4, -32768, 32767);
+                sample = IMA_MTF_ExpandNibble(FWSEData[i], 4, ref sample_decoded_last, ref step_index);
+                ResultA[i] = sample;
 
-                MTF_IMA_ExpandNible(FWSEData, i, 0, ref sample_decoded_last, ref step_index);
-                ResultB[i] = Clamp(sample_decoded_last >> 4, -32768, 32767);
+                sample = IMA_MTF_ExpandNibble(FWSEData[i], 0, ref sample_decoded_last, ref step_index);
+                ResultB[i] = sample;
             }
 
             int A = 0;
@@ -94,80 +97,38 @@ namespace FWSEConverter
             return Result;
         }
 
-        public static void MTF_IMA_SimplifyNible(int[] WAVEData, int offset, ref int sample_encoded, ref int sample_predicted, ref int step_index)
+        // Encode
+
+        public static int MTF_IMA_SimplifyNible(int sample, ref int sample_predicted, ref int step_index)
         {
-            int sample_original, step, diff;
-            int bit0, bit1, bit2, bit3;
+            int diff, step, nibble;
 
-            sample_original = WAVEData[offset];
-            diff = sample_original - sample_predicted;
-
+            diff = (sample << 4) - sample_predicted;
             step = ADPCMTable[step_index];
 
-            if (diff >= 0)
-                bit3 = 0;
-            else
-            {
-                bit3 = 1;
-                diff = -diff;
-            }
+            nibble = Clamp((int)Math.Round(diff / 2.0 / step) + 8, 0, 15);
 
-            if (diff >= step)
-            {
-                bit2 = 1;
-                diff = diff - step;
-            }
-            else
-            {
-                bit2 = 0;
-            }
+            sample_predicted += step * (2 * nibble - 15);
 
-            if (diff >= (step / 2))
-            {
-                bit1 = 1;
-                diff = diff - (step / 2);
-            }
-            else
-            {
-                bit1 = 0;
-            }
+            step_index += CAPCOM_IndexTable[nibble];
+            step_index = Clamp(step_index, 0, 88);
 
-            if (diff >= (step / 4))
-            {
-                bit0 = 1;
-            }
-            else
-            {
-                bit0 = 0;
-            }
-
-            sample_encoded = Convert.ToInt32(bit3.ToString() + bit2.ToString() + bit1.ToString() + bit0.ToString(), 2);
-            sample_predicted = sample_original;
-
-            step_index += ADPCM_IndexTable[sample_encoded];
-
-            if (step_index < 0) step_index = 0;
-            else if (step_index > 88) step_index = 88;
+            return nibble;
         }
 
         public static int[] EncodeMTF_IMA(int[] WAVEData)
         {
             int[] Result = new int[WAVEData.Length / 2];
-            string[] StorageA = new string[WAVEData.Length];
-            string[] StorageB = new string[WAVEData.Length];
+            string[] Storage = new string[WAVEData.Length];
 
-            int sample_encoded = 0;
             int sample_predicted = 0;
+            int sample_encoded = 0;
             int step_index = 0;
 
             for (int i = 0; i < WAVEData.Length; i++)
             {
-                MTF_IMA_SimplifyNible(WAVEData, i, ref sample_encoded, ref sample_predicted, ref step_index);
-
-                if (i % 2 == 0)
-                    StorageA[i] = (sample_encoded).ToString("X");
-                else
-                    StorageB[i] = (sample_encoded).ToString("X");
+                sample_encoded = MTF_IMA_SimplifyNible(WAVEData[i], ref sample_predicted, ref step_index);
+                Storage[i] = sample_encoded.ToString("X");
             }
 
             string bytetemp = "";
@@ -176,11 +137,11 @@ namespace FWSEConverter
             {
                 if (i % 2 == 0)
                 {
-                    bytetemp += StorageA[i];
+                    bytetemp += Storage[i];
                 }
                 else
                 {
-                    bytetemp += StorageB[i] + ",";
+                    bytetemp += Storage[i] + ",";
                 }
             }
 
@@ -320,15 +281,12 @@ namespace FWSEConverter
             }
 
             // SoundData
-
-            /*
-            SoundData = FWSECodec.EncodeMTF_IMA(WAVAData);
+            SoundData = FWSECodec.EncodeMTF_IMA(WAVEData);
 
             for (int i = 0; i < SoundData.Length; i++)
             {
                 BW.Write((byte)SoundData[i]);
             }
-            */
 
             FS.Dispose();
             BW.Dispose();
