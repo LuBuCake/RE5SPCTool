@@ -31,6 +31,11 @@ namespace FWSEConverter
 
         public SPAC(string FilePath)
         {
+            LoadSPAC(FilePath);
+        }
+
+        private void LoadSPAC(string FilePath)
+        {
             FS = new FileStream(FilePath, FileMode.Open);
             BR = new BinaryReader(FS);
 
@@ -120,6 +125,11 @@ namespace FWSEConverter
 
             FS.Dispose();
             BW.Dispose();
+        }
+
+        public bool CheckSPAC()
+        {
+            return Format == "SPAC" && Version == 4;
         }
 
         public void ReplaceFWSE(int Index, byte[] Buffer, byte[] SoundData)

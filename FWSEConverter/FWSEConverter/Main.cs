@@ -201,7 +201,7 @@ namespace FWSEConverter
                     SPACFilePath = OpenFile.FileName;
                     WorkingSPAC = new SPAC(SPACFilePath);
 
-                    if (WorkingSPAC.Format != "SPAC" || WorkingSPAC.Version != 4)
+                    if (!WorkingSPAC.CheckSPAC())
                     {
                         MessageBox.Show("This is not a valid SPC file.", "Ops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         SPACFilePath = "";
@@ -220,8 +220,10 @@ namespace FWSEConverter
                     for (int i = 0; i < WorkingSPAC.NumSounds; i++)
                     {
                         SPACSoundsComboBox.Items.Add("SOUND #: " + i.ToString());
-                        SPACSoundsComboBox.SelectedIndex = 0;
                     }
+
+                    SPACSoundsComboBox.Items.Add("MULTIPLE");
+                    SPACSoundsComboBox.SelectedIndex = 0;
                 }
             }
         }
@@ -256,6 +258,46 @@ namespace FWSEConverter
                 return;
 
             FWSEReader FWSEFile;
+            string filename;
+
+            if (SPACSoundsComboBox.SelectedIndex == WorkingSPAC.NumSounds) // Multiple
+            {
+                using (OpenFileDialog OpenFile = new OpenFileDialog())
+                {
+                    OpenFile.Filter = "FWSE files (*.FWSE)|*.FWSE";
+                    OpenFile.Title = "Select one or more FWSE file with the index you want to replace on its name";
+                    OpenFile.Multiselect = true;
+
+                    if (OpenFile.ShowDialog() == DialogResult.OK)
+                    {
+                        for (int i = 0; i < OpenFile.FileNames.Length; i++)
+                        {
+                            filename = OpenFile.SafeFileNames[i];
+
+                            if (filename.Contains(".FWSE"))
+                                filename = filename.Replace(".FWSE", "");
+
+                            try
+                            {
+                                if (int.Parse(filename) >= 0 && int.Parse(filename) <= (WorkingSPAC.NumSounds - 1))
+                                {
+                                    FWSEFile = new FWSEReader(OpenFile.FileNames[i]);
+                                    WorkingSPAC.ReplaceFWSE(int.Parse(filename), FWSEFile.WholeBuffer, FWSEFile.SoundData);
+                                }
+                            }
+                            catch(Exception)
+                            {
+                                MessageBox.Show("Something wrong during index conversion, check if your file has the correc index on its name.", "Ops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                        }
+
+                        MessageBox.Show("FWSE data replaced!", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                }
+
+                return;
+            }
 
             using (OpenFileDialog OpenFile = new OpenFileDialog())
             {
