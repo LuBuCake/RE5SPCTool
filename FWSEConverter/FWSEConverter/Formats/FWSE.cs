@@ -22,8 +22,6 @@ namespace FWSEConverter
             32767
         };
 
-        public static int[] ADPCM_IndexTable = { -1, -1, -1, -1, 2, 4, 6, 8, -1, -1, -1, -1, 2, 4, 6, 8 };
-
         public static int[] CAPCOM_IndexTable = { 8, 6, 4, 2, -1, -1, -1, -1, -1, -1, -1, -1, 2, 4, 6, 8 };
 
         // Utils
@@ -186,6 +184,11 @@ namespace FWSEConverter
 
         public FWSEReader(string FilePath)
         {
+            ReadFWSE(FilePath);
+        }
+
+        private void ReadFWSE(string FilePath)
+        {
             FS = new FileStream(FilePath, FileMode.Open);
             BR = new BinaryReader(FS);
 
@@ -220,6 +223,11 @@ namespace FWSEConverter
             {
                 ConvertedSoundData[i] = FWSECodec.DecodeMTF_IMA(SoundData);
             }
+        }
+
+        public bool FWSECheck()
+        {
+            return Format == "FWSE" && Version == 2;
         }
     }
 
@@ -275,9 +283,34 @@ namespace FWSEConverter
 
             // UnknowData
 
-            for (int i = 0; i < 992; i++)
+            for (int i = 0; i < 8; i++)
             {
                 BW.Write((byte)0xFF);
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                BW.Write((byte)0x00);
+            }
+
+            for (int i = 0; i < 48; i++)
+            {
+                BW.Write((byte)0xCC);
+            }
+
+            for (int i = 0; i < 124; i++)
+            {
+                BW.Write((byte)0x00);
+            }
+
+            for (int i = 0; i < 640; i++)
+            {
+                BW.Write((byte)0xCC);
+            }
+
+            for (int i = 0; i < 168; i++)
+            {
+                BW.Write((byte)0x00);
             }
 
             // SoundData

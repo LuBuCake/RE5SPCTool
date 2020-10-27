@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Forms;
 
 namespace FWSEConverter
 {
@@ -9,6 +10,9 @@ namespace FWSEConverter
     {
         FileStream FS;
         BinaryReader BR;
+
+        public bool isvalid;
+        public string filepathdir;
 
         // RIFF Chunk
         public string ChunkID;          // 4 Bytes raw string 'RIFF'
@@ -34,79 +38,101 @@ namespace FWSEConverter
 
         public WAVEReader(string FilePath)
         {
-            FS = new FileStream(FilePath, FileMode.Open);
-            BR = new BinaryReader(FS);
+            ReadWAVE(FilePath);
+        }
 
-            // RIFF Reading
-
-            for (int i = 0; i < 4; i++)
+        private void ReadWAVE(string FilePath)
+        {
+            try
             {
-                ChunkID = ChunkID + (char)BR.ReadByte();
-            }
+                FS = new FileStream(FilePath, FileMode.Open);
+                BR = new BinaryReader(FS);
 
-            ChunkSize = BR.ReadUInt32();
+                filepathdir = FilePath;
 
-            for (int i = 0; i < 4; i++)
-            {
-                Format = Format + (char)BR.ReadByte();
-            }
+                // RIFF Reading
 
-            // FMT Reading
-
-            for (int i = 0; i < 4; i++)
-            {
-                Subchunck1ID = Subchunck1ID + (char)BR.ReadByte();
-            }
-
-            Subchunk1Size = BR.ReadUInt32();
-            AudioFormat = BR.ReadUInt16();
-            NumChannels = BR.ReadUInt16();
-            SampleRate = BR.ReadUInt32();
-            ByteRate = BR.ReadUInt32();
-            BlockAlign = BR.ReadUInt16();
-            BitsPerSample = BR.ReadUInt16();
-
-            // DATA Reading
-
-            for (int i = 0; i < 4; i++)
-            {
-                Subchunck2ID = Subchunck2ID + (char)BR.ReadByte();
-            }
-
-            Subchunk2Size = BR.ReadUInt32();
-
-            // Getting Samples
-
-            Samples = (Subchunk2Size / NumChannels) / (BitsPerSample / 8);
-
-            Subchunk2Data = new int[NumChannels][];
-
-            for (int i = 0; i < NumChannels; i++)
-            {
-                Subchunk2Data[i] = new int[Samples];
-            }
-
-            for (int SampleIndex = 0; SampleIndex < Samples; SampleIndex++)
-            {
-                for (int Channels = 0; Channels < NumChannels; Channels++)
+                for (int i = 0; i < 4; i++)
                 {
-                    if (BitsPerSample == 8)
+                    ChunkID = ChunkID + (char)BR.ReadByte();
+                }
+
+                ChunkSize = BR.ReadUInt32();
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Format = Format + (char)BR.ReadByte();
+                }
+
+                // FMT Reading
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Subchunck1ID = Subchunck1ID + (char)BR.ReadByte();
+                }
+
+                Subchunk1Size = BR.ReadUInt32();
+                AudioFormat = BR.ReadUInt16();
+                NumChannels = BR.ReadUInt16();
+                SampleRate = BR.ReadUInt32();
+                ByteRate = BR.ReadUInt32();
+                BlockAlign = BR.ReadUInt16();
+                BitsPerSample = BR.ReadUInt16();
+
+                // DATA Reading
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Subchunck2ID = Subchunck2ID + (char)BR.ReadByte();
+                }
+
+                Subchunk2Size = BR.ReadUInt32();
+
+                // Getting Samples
+
+                Samples = (Subchunk2Size / NumChannels) / (BitsPerSample / 8);
+
+                Subchunk2Data = new int[NumChannels][];
+
+                for (int i = 0; i < NumChannels; i++)
+                {
+                    Subchunk2Data[i] = new int[Samples];
+                }
+
+                for (int SampleIndex = 0; SampleIndex < Samples; SampleIndex++)
+                {
+                    for (int Channels = 0; Channels < NumChannels; Channels++)
                     {
-                        Subchunk2Data[Channels][SampleIndex] = BR.ReadByte();
-                    }
-                    else if (BitsPerSample == 16)
-                    {
-                        Subchunk2Data[Channels][SampleIndex] = BR.ReadInt16();
-                    }
-                    else if (BitsPerSample == 32)
-                    {
-                        Subchunk2Data[Channels][SampleIndex] = BR.ReadInt32();
+                        if (BitsPerSample == 8)
+                        {
+                            Subchunk2Data[Channels][SampleIndex] = BR.ReadByte();
+                        }
+                        else if (BitsPerSample == 16)
+                        {
+                            Subchunk2Data[Channels][SampleIndex] = BR.ReadInt16();
+                        }
+                        else if (BitsPerSample == 32)
+                        {
+                            Subchunk2Data[Channels][SampleIndex] = BR.ReadInt32();
+                        }
                     }
                 }
-            }
 
-            FS.Dispose();
-            BR.Dispose();
+                isvalid = true;
+
+                FS.Dispose();
+                BR.Dispose();
+            }
+            catch(Exception)
+            {
+                isvalid = false;
+                return;
+            }
+        }
+
+        public bool WAVECheck()
+        {
+            return isvalid && SampleRate == 48000 && NumChannels == 1 && BitsPerSample == 16;
         }
     }
 

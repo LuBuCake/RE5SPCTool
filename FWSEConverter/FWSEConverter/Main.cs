@@ -160,7 +160,11 @@ namespace FWSEConverter
                             newfilename = newfilename.Replace(".wav", ".FWSE");
 
                         WAVEFile = new WAVEReader(wavfile);
-                        FWSEFile = new FWSEWriter(Directory.SelectedPath + "/" + newfilename, WAVEFile.Subchunk2Data[0]);
+
+                        if (WAVEFile.WAVECheck())
+                            FWSEFile = new FWSEWriter(Directory.SelectedPath + "/" + newfilename, WAVEFile.Subchunk2Data[0]);
+                        else
+                            MessageBox.Show(WAVEFile.filepathdir + " is not a valid WAVE file.");
                     }
 
                     MessageBox.Show("FWSE files generated!", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
@@ -262,9 +266,9 @@ namespace FWSEConverter
                 {
                     FWSEFile = new FWSEReader(OpenFile.FileName);
 
-                    if (FWSEFile.Format != "FWSE" || FWSEFile.Version != 2)
+                    if (!FWSEFile.FWSECheck())
                     {
-                        MessageBox.Show("This is not a valid FWSE file.", "Ops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(OpenFile.FileName + " is not a valid FWSE file.", "Ops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
