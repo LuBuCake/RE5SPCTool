@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace FWSEConverter
+namespace RE5SPCTool
 {
     static class Program
     {

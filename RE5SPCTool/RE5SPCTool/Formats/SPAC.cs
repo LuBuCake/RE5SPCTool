@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace FWSEConverter
+namespace RE5SPCTool
 {
     public class SPAC
     {

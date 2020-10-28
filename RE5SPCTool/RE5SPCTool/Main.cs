@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 
-namespace FWSEConverter
+namespace RE5SPCTool
 {
     public partial class Main : Form
     {

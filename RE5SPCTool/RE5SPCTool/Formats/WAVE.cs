@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Forms;
 
-namespace FWSEConverter
+namespace RE5SPCTool
 {
     // Format lookup: http://soundfile.sapp.org/doc/WaveFormat/
 

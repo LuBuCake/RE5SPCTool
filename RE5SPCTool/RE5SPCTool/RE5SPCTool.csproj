@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1F160FA9-667D-4500-A081-A0053F4E31BF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>FWSEConverter</RootNamespace>
-    <AssemblyName>FWSEConverter</AssemblyName>
+    <RootNamespace>RE5SPCTool</RootNamespace>
+    <AssemblyName>RE5SPCTool</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

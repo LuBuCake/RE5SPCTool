@@ -1,4 +1,4 @@
-﻿namespace FWSEConverter
+﻿namespace RE5SPCTool
 {
     partial class Main
     {

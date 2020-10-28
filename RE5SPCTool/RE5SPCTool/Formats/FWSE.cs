@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace FWSEConverter
+namespace RE5SPCTool
 {
     public static class FWSECodec
     {
