@@ -117,37 +117,27 @@ namespace RE5SPCTool
         public static int[] EncodeMTF_IMA(int[] WAVEData)
         {
             int[] Result = new int[WAVEData.Length / 2];
-            string[] Storage = new string[WAVEData.Length];
 
             int sample_predicted = 0;
             int sample_encoded = 0;
             int step_index = 0;
 
+            int nibble_left = 0;
+            int nibble_right = 0;
+            int nibble_counter = 0;
+
             for (int i = 0; i < WAVEData.Length; i++)
             {
                 sample_encoded = MTF_IMA_SimplifyNible(WAVEData[i], ref sample_predicted, ref step_index);
-                Storage[i] = sample_encoded.ToString("X");
-            }
 
-            string bytetemp = "";
-
-            for (int i = 0; i < WAVEData.Length; i++)
-            {
                 if (i % 2 == 0)
-                {
-                    bytetemp += Storage[i];
-                }
+                    nibble_left = sample_encoded;
                 else
                 {
-                    bytetemp += Storage[i] + ",";
+                    nibble_right = sample_encoded;
+                    Result[nibble_counter] = (nibble_left << 4) | nibble_right;
+                    nibble_counter++;
                 }
-            }
-
-            string[] organizedbytes = bytetemp.Split(',');
-
-            for (int i = 0; i < organizedbytes.Length - 1; i++)
-            {
-                Result[i] = Convert.ToInt32(organizedbytes[i], 16);
             }
 
             return Result;

@@ -250,7 +250,7 @@ namespace RE5SPCTool
                 if (Directory.ShowDialog() == DialogResult.OK)
                 {
                     WorkingSPAC.ExtractFWSE(Directory.SelectedPath, ConvertToWavBox.Checked);
-                    MessageBox.Show((ConvertToWavBox.Checked ? "WAV" : "FWSE") + " files extracted!.", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    MessageBox.Show((ConvertToWavBox.Checked ? "WAV" : "FWSE") + " files generated!", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
             }
         }
