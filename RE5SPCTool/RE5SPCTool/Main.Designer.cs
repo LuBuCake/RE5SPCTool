@@ -41,28 +41,29 @@
             this.ToWAVFilePathBox = new System.Windows.Forms.TextBox();
             this.ContainerPage = new System.Windows.Forms.TabPage();
             this.SPACToolsGPBox = new System.Windows.Forms.GroupBox();
+            this.SPACToolsReplaceGPBox = new System.Windows.Forms.GroupBox();
             this.ReplaceFWSEButton = new System.Windows.Forms.Button();
-            this.SPACExtractButton = new System.Windows.Forms.Button();
-            this.WithLabel = new System.Windows.Forms.Label();
-            this.ConvertToWavBox = new System.Windows.Forms.CheckBox();
-            this.ReplaceLabel = new System.Windows.Forms.Label();
             this.SPACSoundsComboBox = new System.Windows.Forms.ComboBox();
+            this.ReplaceLabel = new System.Windows.Forms.Label();
+            this.WithLabel = new System.Windows.Forms.Label();
+            this.SPACToolsExtractGPBox = new System.Windows.Forms.GroupBox();
+            this.SPACExtractButton = new System.Windows.Forms.Button();
+            this.ConvertToWavBox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.SPACNameTextBox = new System.Windows.Forms.TextBox();
             this.OpenSPACButton = new System.Windows.Forms.Button();
             this.SaveSPACButton = new System.Windows.Forms.Button();
             this.CopyrightLabel = new System.Windows.Forms.Label();
-            this.SPACNameTextBox = new System.Windows.Forms.TextBox();
-            this.SPACToolsExtractGPBox = new System.Windows.Forms.GroupBox();
-            this.SPACToolsReplaceGPBox = new System.Windows.Forms.GroupBox();
+            this.TopicButton = new System.Windows.Forms.Button();
             this.MainTabControl.SuspendLayout();
             this.ConverterPage.SuspendLayout();
             this.ToFWSEGPBox.SuspendLayout();
             this.ToWAVGPBox.SuspendLayout();
             this.ContainerPage.SuspendLayout();
             this.SPACToolsGPBox.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.SPACToolsExtractGPBox.SuspendLayout();
             this.SPACToolsReplaceGPBox.SuspendLayout();
+            this.SPACToolsExtractGPBox.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ToWAVButton
@@ -99,6 +100,7 @@
             // 
             // ToFWSEGPBox
             // 
+            this.ToFWSEGPBox.Controls.Add(this.TopicButton);
             this.ToFWSEGPBox.Controls.Add(this.ToFWSEOpenFilesButton);
             this.ToFWSEGPBox.Controls.Add(this.ToFWSEFilePathBox);
             this.ToFWSEGPBox.Controls.Add(this.ToFWSEButton);
@@ -190,6 +192,19 @@
             this.SPACToolsGPBox.TabStop = false;
             this.SPACToolsGPBox.Text = "Tools";
             // 
+            // SPACToolsReplaceGPBox
+            // 
+            this.SPACToolsReplaceGPBox.Controls.Add(this.ReplaceFWSEButton);
+            this.SPACToolsReplaceGPBox.Controls.Add(this.SPACSoundsComboBox);
+            this.SPACToolsReplaceGPBox.Controls.Add(this.ReplaceLabel);
+            this.SPACToolsReplaceGPBox.Controls.Add(this.WithLabel);
+            this.SPACToolsReplaceGPBox.Location = new System.Drawing.Point(156, 22);
+            this.SPACToolsReplaceGPBox.Name = "SPACToolsReplaceGPBox";
+            this.SPACToolsReplaceGPBox.Size = new System.Drawing.Size(183, 74);
+            this.SPACToolsReplaceGPBox.TabIndex = 1;
+            this.SPACToolsReplaceGPBox.TabStop = false;
+            this.SPACToolsReplaceGPBox.Text = "Replace";
+            // 
             // ReplaceFWSEButton
             // 
             this.ReplaceFWSEButton.Location = new System.Drawing.Point(92, 44);
@@ -199,6 +214,44 @@
             this.ReplaceFWSEButton.Text = "Browse";
             this.ReplaceFWSEButton.UseVisualStyleBackColor = true;
             this.ReplaceFWSEButton.Click += new System.EventHandler(this.ReplaceFWSEButton_Click);
+            // 
+            // SPACSoundsComboBox
+            // 
+            this.SPACSoundsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.SPACSoundsComboBox.FormattingEnabled = true;
+            this.SPACSoundsComboBox.Location = new System.Drawing.Point(67, 17);
+            this.SPACSoundsComboBox.Name = "SPACSoundsComboBox";
+            this.SPACSoundsComboBox.Size = new System.Drawing.Size(99, 23);
+            this.SPACSoundsComboBox.TabIndex = 2;
+            // 
+            // ReplaceLabel
+            // 
+            this.ReplaceLabel.AutoSize = true;
+            this.ReplaceLabel.Location = new System.Drawing.Point(12, 20);
+            this.ReplaceLabel.Name = "ReplaceLabel";
+            this.ReplaceLabel.Size = new System.Drawing.Size(51, 15);
+            this.ReplaceLabel.TabIndex = 3;
+            this.ReplaceLabel.Text = "Replace:";
+            // 
+            // WithLabel
+            // 
+            this.WithLabel.AutoSize = true;
+            this.WithLabel.Location = new System.Drawing.Point(12, 49);
+            this.WithLabel.Name = "WithLabel";
+            this.WithLabel.Size = new System.Drawing.Size(36, 15);
+            this.WithLabel.TabIndex = 4;
+            this.WithLabel.Text = "With:";
+            // 
+            // SPACToolsExtractGPBox
+            // 
+            this.SPACToolsExtractGPBox.Controls.Add(this.SPACExtractButton);
+            this.SPACToolsExtractGPBox.Controls.Add(this.ConvertToWavBox);
+            this.SPACToolsExtractGPBox.Location = new System.Drawing.Point(6, 22);
+            this.SPACToolsExtractGPBox.Name = "SPACToolsExtractGPBox";
+            this.SPACToolsExtractGPBox.Size = new System.Drawing.Size(144, 74);
+            this.SPACToolsExtractGPBox.TabIndex = 0;
+            this.SPACToolsExtractGPBox.TabStop = false;
+            this.SPACToolsExtractGPBox.Text = "Extract";
             // 
             // SPACExtractButton
             // 
@@ -210,15 +263,6 @@
             this.SPACExtractButton.UseVisualStyleBackColor = true;
             this.SPACExtractButton.Click += new System.EventHandler(this.SPACExtractButton_Click);
             // 
-            // WithLabel
-            // 
-            this.WithLabel.AutoSize = true;
-            this.WithLabel.Location = new System.Drawing.Point(12, 49);
-            this.WithLabel.Name = "WithLabel";
-            this.WithLabel.Size = new System.Drawing.Size(36, 15);
-            this.WithLabel.TabIndex = 4;
-            this.WithLabel.Text = "With:";
-            // 
             // ConvertToWavBox
             // 
             this.ConvertToWavBox.AutoSize = true;
@@ -228,24 +272,6 @@
             this.ConvertToWavBox.TabIndex = 1;
             this.ConvertToWavBox.Text = "Convert to: (.wav)";
             this.ConvertToWavBox.UseVisualStyleBackColor = true;
-            // 
-            // ReplaceLabel
-            // 
-            this.ReplaceLabel.AutoSize = true;
-            this.ReplaceLabel.Location = new System.Drawing.Point(12, 20);
-            this.ReplaceLabel.Name = "ReplaceLabel";
-            this.ReplaceLabel.Size = new System.Drawing.Size(51, 15);
-            this.ReplaceLabel.TabIndex = 3;
-            this.ReplaceLabel.Text = "Replace:";
-            // 
-            // SPACSoundsComboBox
-            // 
-            this.SPACSoundsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.SPACSoundsComboBox.FormattingEnabled = true;
-            this.SPACSoundsComboBox.Location = new System.Drawing.Point(67, 17);
-            this.SPACSoundsComboBox.Name = "SPACSoundsComboBox";
-            this.SPACSoundsComboBox.Size = new System.Drawing.Size(99, 23);
-            this.SPACSoundsComboBox.TabIndex = 2;
             // 
             // groupBox1
             // 
@@ -258,6 +284,15 @@
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "SPC File";
+            // 
+            // SPACNameTextBox
+            // 
+            this.SPACNameTextBox.Enabled = false;
+            this.SPACNameTextBox.Location = new System.Drawing.Point(183, 19);
+            this.SPACNameTextBox.Name = "SPACNameTextBox";
+            this.SPACNameTextBox.ReadOnly = true;
+            this.SPACNameTextBox.Size = new System.Drawing.Size(141, 23);
+            this.SPACNameTextBox.TabIndex = 2;
             // 
             // OpenSPACButton
             // 
@@ -289,38 +324,15 @@
             this.CopyrightLabel.TabIndex = 1;
             this.CopyrightLabel.Text = "Copyright © 2020 by LuBuCake";
             // 
-            // SPACNameTextBox
+            // TopicButton
             // 
-            this.SPACNameTextBox.Enabled = false;
-            this.SPACNameTextBox.Location = new System.Drawing.Point(183, 19);
-            this.SPACNameTextBox.Name = "SPACNameTextBox";
-            this.SPACNameTextBox.ReadOnly = true;
-            this.SPACNameTextBox.Size = new System.Drawing.Size(141, 23);
-            this.SPACNameTextBox.TabIndex = 2;
-            // 
-            // SPACToolsExtractGPBox
-            // 
-            this.SPACToolsExtractGPBox.Controls.Add(this.SPACExtractButton);
-            this.SPACToolsExtractGPBox.Controls.Add(this.ConvertToWavBox);
-            this.SPACToolsExtractGPBox.Location = new System.Drawing.Point(6, 22);
-            this.SPACToolsExtractGPBox.Name = "SPACToolsExtractGPBox";
-            this.SPACToolsExtractGPBox.Size = new System.Drawing.Size(144, 74);
-            this.SPACToolsExtractGPBox.TabIndex = 0;
-            this.SPACToolsExtractGPBox.TabStop = false;
-            this.SPACToolsExtractGPBox.Text = "Extract";
-            // 
-            // SPACToolsReplaceGPBox
-            // 
-            this.SPACToolsReplaceGPBox.Controls.Add(this.ReplaceFWSEButton);
-            this.SPACToolsReplaceGPBox.Controls.Add(this.SPACSoundsComboBox);
-            this.SPACToolsReplaceGPBox.Controls.Add(this.ReplaceLabel);
-            this.SPACToolsReplaceGPBox.Controls.Add(this.WithLabel);
-            this.SPACToolsReplaceGPBox.Location = new System.Drawing.Point(156, 22);
-            this.SPACToolsReplaceGPBox.Name = "SPACToolsReplaceGPBox";
-            this.SPACToolsReplaceGPBox.Size = new System.Drawing.Size(183, 74);
-            this.SPACToolsReplaceGPBox.TabIndex = 1;
-            this.SPACToolsReplaceGPBox.TabStop = false;
-            this.SPACToolsReplaceGPBox.Text = "Replace";
+            this.TopicButton.Location = new System.Drawing.Point(21, 47);
+            this.TopicButton.Name = "TopicButton";
+            this.TopicButton.Size = new System.Drawing.Size(23, 23);
+            this.TopicButton.TabIndex = 2;
+            this.TopicButton.Text = "?";
+            this.TopicButton.UseVisualStyleBackColor = true;
+            this.TopicButton.Click += new System.EventHandler(this.TopicButton_Click);
             // 
             // Main
             // 
@@ -345,12 +357,12 @@
             this.ToWAVGPBox.PerformLayout();
             this.ContainerPage.ResumeLayout(false);
             this.SPACToolsGPBox.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.SPACToolsExtractGPBox.ResumeLayout(false);
-            this.SPACToolsExtractGPBox.PerformLayout();
             this.SPACToolsReplaceGPBox.ResumeLayout(false);
             this.SPACToolsReplaceGPBox.PerformLayout();
+            this.SPACToolsExtractGPBox.ResumeLayout(false);
+            this.SPACToolsExtractGPBox.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -383,6 +395,7 @@
         private System.Windows.Forms.TextBox SPACNameTextBox;
         private System.Windows.Forms.GroupBox SPACToolsReplaceGPBox;
         private System.Windows.Forms.GroupBox SPACToolsExtractGPBox;
+        private System.Windows.Forms.Button TopicButton;
     }
 }
 

@@ -104,7 +104,7 @@ namespace RE5SPCTool
             diff = (sample << 4) - sample_predicted;
             step = ADPCMTable[step_index];
 
-            nibble = Clamp((int)Math.Round(diff / 2.0 / step) + 8, 0, 15);
+            nibble = Clamp((int)Math.Round(diff / step / 2.0) + 8, 0, 15);
 
             sample_predicted += step * (2 * nibble - 15);
 
@@ -262,14 +262,14 @@ namespace RE5SPCTool
             // FWSE Header
 
             BW.Write(Format.ToCharArray());
-            BW.Write(BitConverter.GetBytes(Version));
-            BW.Write(BitConverter.GetBytes(DataSize));
-            BW.Write(BitConverter.GetBytes(Buffer));
-            BW.Write(BitConverter.GetBytes(Channels));
+            BW.Write(Version);
+            BW.Write(DataSize);
+            BW.Write(Buffer);
+            BW.Write(Channels);
 
-            BW.Write(BitConverter.GetBytes(SampleCount));
-            BW.Write(BitConverter.GetBytes(SampleRate));
-            BW.Write(BitConverter.GetBytes(BitsPerSample));
+            BW.Write(SampleCount);
+            BW.Write(SampleRate);
+            BW.Write(BitsPerSample);
 
             // UnknowData
 
@@ -283,7 +283,17 @@ namespace RE5SPCTool
                 BW.Write((byte)0x00);
             }
 
-            for (int i = 0; i < 48; i++)
+            for (int i = 0; i < 20; i++)
+            {
+                BW.Write((byte)0xCC);
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                BW.Write((byte)0x00);
+            }
+
+            for (int i = 0; i < 24; i++)
             {
                 BW.Write((byte)0xCC);
             }
@@ -302,6 +312,13 @@ namespace RE5SPCTool
             {
                 BW.Write((byte)0x00);
             }
+
+            /*
+            for (int i = 0; i < 992; i++)
+            {
+                BW.Write((byte)0xFF);
+            }
+            */
 
             // SoundData
             SoundData = FWSECodec.EncodeMTF_IMA(WAVEData);

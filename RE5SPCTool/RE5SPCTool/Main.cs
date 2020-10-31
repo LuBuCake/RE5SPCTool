@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace RE5SPCTool
@@ -321,6 +322,14 @@ namespace RE5SPCTool
                     MessageBox.Show("FWSE data replaced!", "Yay!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 }
             }
+        }
+
+        private void TopicButton_Click(object sender, EventArgs e)
+        {
+            DialogResult ShouldOpenURL = MessageBox.Show("This will open a page in your browser, confirm?", "Original Topic Guides", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (ShouldOpenURL == DialogResult.Yes)
+                Process.Start("https://residentevilmodding.boards.net/thread/13992/resident-evil-fwse-spc-tool");
         }
     }
 }
