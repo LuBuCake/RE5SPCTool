@@ -104,7 +104,7 @@ namespace RE5SPCTool
             diff = (sample << 4) - sample_predicted;
             step = ADPCMTable[step_index];
 
-            nibble = Clamp((int)Math.Round(diff / step / 2.0) + 8, 0, 15);
+            nibble = Clamp((diff / step / 2) + 8, 0, 15);
 
             sample_predicted += step * (2 * nibble - 15);
 
