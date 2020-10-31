@@ -291,7 +291,7 @@ namespace RE5SPCTool
                             }
                             catch(Exception)
                             {
-                                MessageBox.Show("Something wrong during index conversion, check if your file has the correc index on its name.", "Ops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("Something wrong during index conversion, check if your file has the correct index on its name.", "Ops!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
                             }
                         }
