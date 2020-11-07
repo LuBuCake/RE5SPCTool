@@ -205,16 +205,17 @@ namespace RE5SPCTool
             BR.Dispose();
 
             ConvertedSoundData = new int[Channels][];
-
-            for (int i = 0; i < Channels; i++)
-            {
-                ConvertedSoundData[i] = FWSECodec.DecodeMTF_IMA(SoundData);
-            }
+            ConvertedSoundData[i] = FWSECodec.DecodeMTF_IMA(SoundData);
         }
 
         public bool FWSECheck()
         {
-            return Format == "FWSE" && Version == 2;
+            if (Format == "FWSE" && Version == 2)
+            {
+                return Channels == 1;
+            }
+            
+            return false;
         }
     }
 
