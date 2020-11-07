@@ -10,6 +10,10 @@ Detailed information and instructions at the [Original Topic](https://residentev
 * Convert FWSE to WAVE and vice-versa.
 * Extract and replace FWSE files inside RESIDENT EVIL 5 SPC containers.
 
+## Codecs
+
+All codecs inside this tool have been made from scratch by me and they were made to atend only the needs of this specific tool so be aware of it.
+
 ## Icon
 
 Made by CAPCOM, extracted from RESIDENT EVIL 5 Executable.
