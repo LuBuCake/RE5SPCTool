@@ -311,14 +311,8 @@ namespace RE5SPCTool
                 BW.Write((byte)0x00);
             }
 
-            /*
-            for (int i = 0; i < 992; i++)
-            {
-                BW.Write((byte)0xFF);
-            }
-            */
-
             // SoundData
+            
             SoundData = FWSECodec.EncodeMTF_IMA(WAVEData);
 
             for (int i = 0; i < SoundData.Length; i++)
