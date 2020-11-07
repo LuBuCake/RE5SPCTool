@@ -15,7 +15,6 @@ You should have received a copy of the GNU General Public License
 along with RESIDENT EVIL 5 FWSE/SPC Tool. If not, see <https://www.gnu.org/licenses/>6.
 */
 
-using System;
 using System.IO;
 
 namespace RE5SPCTool
@@ -74,39 +73,20 @@ namespace RE5SPCTool
 
         public static int[] DecodeMTF_IMA(byte[] FWSEData)
         {
-            int sample_count = FWSEData.Length * 2;
-            int sample_decoded_last = 0;
-            int step_index = 0;
-            int sample = 0;
+            int[] Result = new int[FWSEData.Length * 2];
 
-            int[] ResultA = new int[FWSEData.Length];
-            int[] ResultB = new int[FWSEData.Length];
-            int[] Result = new int[sample_count];
+            int sample_decoded_last = 0;
+            int result_index = 0;
+            int step_index = 0;
+            int sample;
 
             for (int i = 0; i < FWSEData.Length; i++)
             {
                 sample = IMA_MTF_ExpandNibble(FWSEData[i], 4, ref sample_decoded_last, ref step_index);
-                ResultA[i] = sample;
+                Result[result_index] = sample; result_index++;
 
                 sample = IMA_MTF_ExpandNibble(FWSEData[i], 0, ref sample_decoded_last, ref step_index);
-                ResultB[i] = sample;
-            }
-
-            int A = 0;
-            int B = 0;
-
-            for (int i = 0; i < sample_count; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    Result[i] = ResultA[A];
-                    A++;
-                }
-                else
-                {
-                    Result[i] = ResultB[B];
-                    B++;
-                }
+                Result[result_index] = sample; result_index++;
             }
 
             return Result;
